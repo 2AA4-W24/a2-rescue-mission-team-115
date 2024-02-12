@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.teamXXX;
+package ca.mcmaster.se2aa4.island.team115;
 
 import java.io.StringReader;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +11,8 @@ import org.json.JSONTokener;
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
+    int i = 0;
+    boolean scan = false;
 
     @Override
     public void initialize(String s) {
@@ -26,7 +28,16 @@ public class Explorer implements IExplorerRaid {
     @Override
     public String takeDecision() {
         JSONObject decision = new JSONObject();
-        decision.put("action", "stop"); // we stop the exploration immediately
+        if(scan){
+            decision.put("action", "scan");
+            scan = false;
+        }else if(i>10){
+            decision.put("action", "stop");
+        }else{
+            decision.put("action", "fly");
+            scan = true;
+            i++;
+        }
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();
     }
