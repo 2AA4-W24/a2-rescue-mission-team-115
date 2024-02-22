@@ -15,10 +15,8 @@ public class ExtractInfo {
     public Integer getCost(){
         return cost;
     }
-    private Integer initialbattery;
-    public Integer getInitialBattery(){
-        return initialbattery;
-    }
+   
+
     public void parseJSON(String file) throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(file)));
         JSONArray jsonArray = new JSONArray(content);
@@ -45,7 +43,8 @@ public class ExtractInfo {
             }
         }
         if(data.has("budget")){
-            initialbattery = (Integer) data.get("budget");
+            BatteryTracker.setBatteryLevel((Integer) data.get("budget"));
+            //sets initial battery level
         }
 
         if (data.has("cost")) {
@@ -66,7 +65,8 @@ public class ExtractInfo {
                 }
             }
         }
-        Files.write(Paths.get("/Users/kunxing/Desktop/Y2/Semester2/2AA4/Assignments/a2-rescue-mission-team-115/outputs/info.json"), result.toString(4).getBytes());}
+       //Files.write(Paths.get("/Users/kunxing/Desktop/Y2/Semester2/2AA4/Assignments/a2-rescue-mission-team-115/outputs/info.json"), result.toString(4).getBytes());
     }
+}
     
     
