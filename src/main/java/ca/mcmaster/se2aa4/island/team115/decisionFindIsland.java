@@ -1,6 +1,10 @@
 package ca.mcmaster.se2aa4.island.team115;
 
-public class decisionFindIland {
+import org.apache.wml.WMLAElement;
+
+import com.alibaba.fastjson.JSONObject;
+
+public class decisionFindIsland {
     public String facing = "East";
     public int rangeF;
     public int rangeFL;
@@ -12,12 +16,15 @@ public class decisionFindIland {
     public boolean target = false;
 
     public void echo(String direction){
-
+        JSONObject decisio
     }
     public void turn (String turnDirection){
-
+            E S N 
+            S E W
+            N W E
+            W N S
     }
-    public boolean FindIland(){
+    public boolean FindIsland(){
         echo("Facing");
         echo("FacingLeftOf");
         echo("FacingRightOf");
