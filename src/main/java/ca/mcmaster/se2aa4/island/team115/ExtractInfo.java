@@ -8,15 +8,37 @@ import java.io.IOException;
 
 public class ExtractInfo {
     private Direction initialheading;
+    private Integer cost;
+    private String found;
+    private Integer range;
+
+    public ExtractInfo() {
+
+    }
+
+    public ExtractInfo(Direction initialheading) {
+        this.initialheading = initialheading;
+
+    }
+
     public Direction getInitialHeading(){
         return initialheading;
     }
-    private Integer cost;
+    
     public Integer getCost(){
         return cost;
     }
-   
 
+    public Integer getRange(){
+        return range;
+    }
+
+    public String getFound(){
+        return found;
+    }
+   
+    //NOTE NOTE NOTE NOTE NOTE
+    // WE NEED TO SPLIT UP THE PARSEJSON METHOD. ALSO WE NEED TO ADD SOMETHING FOR GETTING THE INFORMATION FOR ECHO.
     public void parseJSON(String file) throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(file)));
         JSONArray jsonArray = new JSONArray(content);
@@ -47,6 +69,8 @@ public class ExtractInfo {
             //sets initial battery level
         }
 
+
+        //We need to separate the extraction of cost from heading and budget. Heading and budget take care of the initialize Method in Explorer
         if (data.has("cost")) {
             cost = (Integer) data.get("cost");
             if(data.has("extras")){
@@ -62,6 +86,9 @@ public class ExtractInfo {
                     siteDetails.put(new JSONObject().put("name","site"));
                     siteDetails.put(new JSONObject().put("coordinates", "xy"));
                     result.put(siteDetails);
+                } else if(extra.has("found")){
+                    found = extra.getString("found");
+                    range = extra.getInt("range");
                 }
             }
         }
