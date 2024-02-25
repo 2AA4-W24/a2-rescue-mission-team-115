@@ -28,16 +28,19 @@ public class Explorer implements IExplorerRaid {
     @Override
     public String takeDecision() {
         JSONObject decision = new JSONObject();
-        if(scan){
-            decision.put("action", "scan");
-            scan = false;
-        }else if(i>10){
-            decision.put("action", "stop");
-        }else{
-            decision.put("action", "fly");
-            scan = true;
-            i++;
-        }
+        decision.put("action", "echo");
+        decision.put("parameters", (new JSONObject()).put("direction", "E"));
+        decision.put("parameters", (new JSONObject()).put("direction", "S"));
+        // if(scan){
+        //     decision.put("action", "scan");
+        //     scan = false;
+        // }else if(i>10){
+        //     decision.put("action", "stop");
+        // }else{
+        //     decision.put("action", "fly");
+        //     scan = true;
+        //     i++;
+        // }
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();
     }
