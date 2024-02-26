@@ -16,4 +16,5 @@ package ca.mcmaster.se2aa4.island.team115;
     }
 
     //method for checking if battery level is low
+    //Consider changing static methods to instance methods and create an object, and change extractInfo accordingly
 }

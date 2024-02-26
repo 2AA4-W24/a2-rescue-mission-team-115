@@ -27,19 +27,19 @@ public class Navigator {
 
     public static String enumToString(Direction dir){
         switch(dir){
-            case Direction.North:
+            case North:
                 return "N";
 
-            case Direction.South:
+            case South:
                 return "S";
 
-            case Direction.East:
+            case East:
                 return "E";
 
-            case Direction.West:
+            case West:
                 return "W";
             default:
-                return "A7a";
+                return "Impossible";
         }
     }
 

@@ -10,7 +10,7 @@ public class DroneStatus {
     private JSONObject currentInfo;
     private JSONObject POI;
    
-    private void updateBattery(){
+    private void setInitialBattery(){
     }
 
     private void updateInfo(){
