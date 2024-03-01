@@ -1,21 +1,13 @@
 package ca.mcmaster.se2aa4.island.team115;
 
-import org.apache.wml.WMLAElement;
-
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 public class decisionFindIsland {
-    ExtractInfo ext = new ExtractInfo();
-    public Direction facing = ext.getInitialHeading() ;
-    public int rangeNorth;
-    public int rangeSouth;
-    public int rangeEast;
-    public int rangeWest;
-    public boolean foundNorth; // the ground is equal to true
-    public boolean foundSouth;
-    public boolean foundEast;
-    public boolean foundWest;
+    ExtractInfo info = new ExtractInfo();
+    public Direction facing = info.getInitialHeading() ;
+    private int range;
+
+    private boolean isGround; // the ground is equal to true
 
     public boolean target = false;
 
@@ -34,57 +26,57 @@ public class decisionFindIsland {
             return false;
         }
     }
-    public void turn (String turnDirection){
-          
+    public void turn (String newDirection){
+
     }
 
     public boolean findIsland(){
         String strDir = Navigator.enumToString(facing);
         switch(facing){
-            case Direction.North:
-                echo(Direction.North);
-                rangeNorth = ext.getRange();
-                foundNorth = foundResults(ext.getFound());
-                echo(Direction.East);
-                rangeEast = ext.getRange();
-                foundEast = foundResults(ext.getFound());
-                echo(Direction.West);
-                rangeWest = ext.getRange();
-                foundWest = foundResults(ext.getFound());
+            case Direction.N:
+                echo(Direction.N);
+                rangeNorth = info.getRange();
+                foundNorth = foundResults(info.getFound());
+                echo(Direction.E);
+                rangeEast = info.getRange();
+                foundEast = foundResults(info.getFound());
+                echo(Direction.W);
+                rangeWest = info.getRange();
+                foundWest = foundResults(info.getFound());
 
                 break;
-            case Direction.South:
-                echo(Direction.South);
-                rangeSouth = ext.getRange();
-                foundSouth = foundResults(ext.getFound());
-                echo(Direction.East);
-                rangeEast = ext.getRange();
-                foundEast = foundResults(ext.getFound());
-                echo(Direction.West);
-                rangeWest = ext.getRange();
-                foundWest = foundResults(ext.getFound());
+            case Direction.S:
+                echo(Direction.S);
+                rangeSouth = info.getRange();
+                foundSouth = foundResults(info.getFound());
+                echo(Direction.E);
+                rangeEast = info.getRange();
+                foundEast = foundResults(info.getFound());
+                echo(Direction.W);
+                rangeWest = info.getRange();
+                foundWest = foundResults(info.getFound());
                 break;  
-            case Direction.East:
-                echo(Direction.East);
-                rangeEast = ext.getRange();
-                foundEast = foundResults(ext.getFound());
-                echo(Direction.North);
-                rangeNorth = ext.getRange();
-                foundNorth = foundResults(ext.getFound());
-                echo(Direction.South);
-                rangeSouth = ext.getRange();
-                foundSouth = foundResults(ext.getFound());
+            case Direction.E:
+                echo(Direction.E);
+                rangeEast = info.getRange();
+                foundEast = foundResults(info.getFound());
+                echo(Direction.N);
+                rangeNorth = info.getRange();
+                foundNorth = foundResults(info.getFound());
+                echo(Direction.S);
+                rangeSouth = info.getRange();
+                foundSouth = foundResults(info.getFound());
                 break;  
-            case Direction.West:
-                echo(Direction.West);
-                rangeWest = ext.getRange();
-                foundWest = foundResults(ext.getFound());
-                echo(Direction.North);
-                rangeNorth = ext.getRange();
-                foundNorth = foundResults(ext.getFound());
-                echo(Direction.South);
-                rangeSouth = ext.getRange();
-                foundSouth = foundResults(ext.getFound());
+            case Direction.W:
+                echo(Direction.W);
+                rangeWest = info.getRange();
+                foundWest = foundResults(info.getFound());
+                echo(Direction.N);
+                rangeNorth = info.getRange();
+                foundNorth = foundResults(info.getFound());
+                echo(Direction.S);
+                rangeSouth = info.getRange();
+                foundSouth = foundResults(info.getFound());
                 break;   
         }
 
@@ -153,7 +145,7 @@ public class decisionFindIsland {
     //         rangeF = 50;
     //         foundF = false;
     //         if (foundF == true){
-    //             // move to the iland
+    //             // move to the island
     //             target = true;
     //         }
 

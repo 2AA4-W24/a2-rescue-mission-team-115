@@ -51,16 +51,16 @@ public class ExtractInfo {
             String heading = data.get("heading").toString();
             switch(heading){
                 case "E":
-                    initialheading = Direction.East;
+                    initialheading = Direction.E;
                     break;
                 case "W":
-                    initialheading = Direction.West;
+                    initialheading = Direction.W;
                     break;
                 case "N":
-                    initialheading = Direction.North;
+                    initialheading = Direction.N;
                     break;
                 case "S":
-                    initialheading = Direction.South;
+                    initialheading = Direction.S;
                     break;
             }
         }

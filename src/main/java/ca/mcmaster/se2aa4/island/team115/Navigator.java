@@ -10,16 +10,16 @@ public class Navigator {
     public static Direction stringToEnum(String dir){
         switch(dir){
             case "N":
-                direction = Direction.North;
+                direction = Direction.N;
                 break;
             case "S":
-                direction = Direction.South;
+                direction = Direction.S;
                 break;
             case "E":
-                direction = Direction.East;
+                direction = Direction.E;
                 break;
             case "W":
-                direction = Direction.West;
+                direction = Direction.W;
                 break;
         }
         return direction;
@@ -27,16 +27,16 @@ public class Navigator {
 
     public static String enumToString(Direction dir){
         switch(dir){
-            case North:
+            case N:
                 return "N";
 
-            case South:
+            case S:
                 return "S";
 
-            case East:
+            case E:
                 return "E";
 
-            case West:
+            case W:
                 return "W";
             default:
                 return "Impossible";
@@ -52,13 +52,13 @@ public class Navigator {
     public void navigate(){
         //Navigates/moves based on direction 
         switch(direction){
-            case North:
+            case N:
                 break;
-            case East:
+            case E:
                 break;
-            case South:
+            case S:
                 break;
-            case West:
+            case W:
                 break;
         }
     }
