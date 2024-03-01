@@ -17,15 +17,15 @@ public class Coordinates {
         return y;
     }
 
-    public void incrementX(int x){
+    public void incrementX(){
         x++;
     }
 
-    public void incrementY(int y){
+    public void incrementY(){
         y++;
     }
 
-    public void decrementX(int x){
+    public void decrementX(){
         x--;
     }
 
