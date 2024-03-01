@@ -29,7 +29,7 @@ public class Coordinates {
         x--;
     }
 
-    public void decrementY(int y){
+    public void decrementY(){
         y--;
     }
 
