@@ -8,7 +8,8 @@ public class decisionFindIsland {
     private int range;
 
     private boolean isGround; // the ground is equal to true
-
+    private int tempRange;
+    private boolean tempFound;
     public boolean target = false;
 
 
@@ -30,60 +31,121 @@ public class decisionFindIsland {
 
     }
 
-    public boolean findIsland(){
-        String strDir = Navigator.enumToString(facing);
+
+    public boolean findIsland(){  // while loop it
+        Direction moveDir;
         switch(facing){
             case Direction.N:
                 echo(Direction.N);
-                rangeNorth = info.getRange();
-                foundNorth = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.N;
+                    break;
+                }
+
                 echo(Direction.E);
-                rangeEast = info.getRange();
-                foundEast = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.E;
+                    break;
+                }
                 echo(Direction.W);
-                rangeWest = info.getRange();
-                foundWest = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.W;
+                    break;
+                }
 
                 break;
             case Direction.S:
                 echo(Direction.S);
-                rangeSouth = info.getRange();
-                foundSouth = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.S;
+                    break;
+                }
                 echo(Direction.E);
-                rangeEast = info.getRange();
-                foundEast = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.E;
+                    break;
+                }
                 echo(Direction.W);
-                rangeWest = info.getRange();
-                foundWest = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.W;
+                    break;
+                }
                 break;  
             case Direction.E:
                 echo(Direction.E);
-                rangeEast = info.getRange();
-                foundEast = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.E;
+                    break;
+                }
                 echo(Direction.N);
-                rangeNorth = info.getRange();
-                foundNorth = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.N;
+                    break;
+                }
                 echo(Direction.S);
-                rangeSouth = info.getRange();
-                foundSouth = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.S;
+                    break;
+                }
                 break;  
             case Direction.W:
                 echo(Direction.W);
-                rangeWest = info.getRange();
-                foundWest = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.W;
+                    break;
+                }
                 echo(Direction.N);
-                rangeNorth = info.getRange();
-                foundNorth = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.N;
+                    break;
+                }
                 echo(Direction.S);
-                rangeSouth = info.getRange();
-                foundSouth = foundResults(info.getFound());
+                tempRange = info.getRange();
+                isGround = foundResults(info.getFound());
+                if (isGround){
+                    range = tempRange;
+                    moveDir = Direction.S;
+                    break;
+                }
                 break;   
         }
 
-        // MUST IMPLEMENT THE REST OF THE LOGIC, WHICH IS STATED BELOW
-    //     // the facing and value will be updated for all three directions
 
-        
+        // MUST IMPLEMENT THE REST OF THE LOGIC, WHICH IS STATED BELOW
+    //     // the facing and value will be updated for all three direction
 
     //     // the three founds updated
     //     if (foundF || foundFL || foundFR) {
