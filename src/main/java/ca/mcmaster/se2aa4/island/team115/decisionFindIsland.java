@@ -11,15 +11,11 @@ public class decisionFindIsland {
     private int tempRange;
     private boolean tempFound;
     public boolean target = false;
+    Direction moveDir;
+    Action action = new Action();
 
 
-    public String echo(Direction direction){
-        String strDir = Navigator.enumToString(direction);
-        JSONObject decision = new JSONObject();
-        decision.put("action", "echo");
-        decision.put("parameters", (new JSONObject()).put("direction", strDir));
-        return decision.toString();
-    }
+    
     public boolean foundResults(String foundString){
         if(foundString.equals("GROUND")){
             return true;
@@ -30,13 +26,14 @@ public class decisionFindIsland {
     public void turn (String newDirection){
 
     }
-
+    public Direction getMoveDirection(){
+        return moveDir;
+    }
 
     public boolean findIsland(){  // while loop it
-        Direction moveDir;
         switch(facing){
             case Direction.N:
-                echo(Direction.N);
+                action.echo(Direction.N);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -45,7 +42,7 @@ public class decisionFindIsland {
                     break;
                 }
 
-                echo(Direction.E);
+                action.echo(Direction.E);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -53,7 +50,7 @@ public class decisionFindIsland {
                     moveDir = Direction.E;
                     break;
                 }
-                echo(Direction.W);
+                action.echo(Direction.W);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -64,7 +61,7 @@ public class decisionFindIsland {
 
                 break;
             case Direction.S:
-                echo(Direction.S);
+                action.echo(Direction.S);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -72,7 +69,7 @@ public class decisionFindIsland {
                     moveDir = Direction.S;
                     break;
                 }
-                echo(Direction.E);
+                action.echo(Direction.E);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -80,7 +77,7 @@ public class decisionFindIsland {
                     moveDir = Direction.E;
                     break;
                 }
-                echo(Direction.W);
+                action.echo(Direction.W);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -90,7 +87,7 @@ public class decisionFindIsland {
                 }
                 break;  
             case Direction.E:
-                echo(Direction.E);
+                action.echo(Direction.E);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -98,7 +95,7 @@ public class decisionFindIsland {
                     moveDir = Direction.E;
                     break;
                 }
-                echo(Direction.N);
+                action.echo(Direction.N);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -106,7 +103,7 @@ public class decisionFindIsland {
                     moveDir = Direction.N;
                     break;
                 }
-                echo(Direction.S);
+                action.echo(Direction.S);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -116,7 +113,7 @@ public class decisionFindIsland {
                 }
                 break;  
             case Direction.W:
-                echo(Direction.W);
+                action.echo(Direction.W);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -124,7 +121,7 @@ public class decisionFindIsland {
                     moveDir = Direction.W;
                     break;
                 }
-                echo(Direction.N);
+                action.echo(Direction.N);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -132,7 +129,7 @@ public class decisionFindIsland {
                     moveDir = Direction.N;
                     break;
                 }
-                echo(Direction.S);
+                action.echo(Direction.S);
                 tempRange = info.getRange();
                 isGround = foundResults(info.getFound());
                 if (isGround){
@@ -142,6 +139,7 @@ public class decisionFindIsland {
                 }
                 break;   
         }
+
 
 
         // MUST IMPLEMENT THE REST OF THE LOGIC, WHICH IS STATED BELOW
