@@ -12,7 +12,10 @@ public class ExtractInfo {
     private String found;
     private Integer range;
 
-    public void initialheading(String JSONfile) throws IOException{
+    // public ExtractInfo(){
+
+    // }
+    public void parser(String JSONfile) throws IOException{
         parseJSON(JSONfile);
     }
     public Direction getInitialHeading() {
@@ -62,50 +65,53 @@ public class ExtractInfo {
                     initialheading = Direction.S;
                     break;
             }
-        }}
-
-        private void initialBattery(String file) throws IOException{
-            
-            String content = new String(Files.readAllBytes(Paths.get(file)));
-            JSONArray jsonArray = new JSONArray(content);
-            JSONArray result = new JSONArray();
-            JSONObject jsonObject = jsonArray.getJSONObject(jsonArray.length()-1);
-            JSONObject data = jsonObject.getJSONObject("data");
-            if(data.has("budget")){
-                BatteryTracker.setBatteryLevel((Integer) data.get("budget"));
         }
     }
-        private void accessInfo(String file) throws IOException {
 
-            String content = new String(Files.readAllBytes(Paths.get(file)));
-            JSONArray jsonArray = new JSONArray(content);
-            JSONArray result = new JSONArray();
-            JSONObject jsonObject = jsonArray.getJSONObject(jsonArray.length()-1);
-            JSONObject data = jsonObject.getJSONObject("data");
 
-        //We need to separate the extraction of cost from heading and budget. Heading and budget take care of the initialize Method in Explorer
-            if (data.has("cost")) {
-                cost = (Integer) data.get("cost");
-                if(data.has("extras")){
-                    JSONObject extra = data.getJSONObject("extras");
-                    if(extra.has("creeks")&&extra.getJSONArray("creeks").length()>0){
-                        JSONArray creekDetails = new JSONArray();
-                        creekDetails.put(new JSONObject().put("name","creek"));
-                        creekDetails.put(new JSONObject().put("coordinates", "xy"));
-                        result.put(creekDetails);
-                    }
-                    else if(extra.has("sites")&&extra.getJSONArray("sites").length()>0){
-                        JSONArray siteDetails = new JSONArray();
-                        siteDetails.put(new JSONObject().put("name","site"));
-                        siteDetails.put(new JSONObject().put("coordinates", "xy"));
-                        result.put(siteDetails);
-                    } else if(extra.has("found")){
-                        found = extra.getString("found");
-                        range = extra.getInt("range");
+    private void initialBattery(String file) throws IOException{
+            
+        String content = new String(Files.readAllBytes(Paths.get(file)));
+        JSONArray jsonArray = new JSONArray(content);
+        JSONArray result = new JSONArray();
+        JSONObject jsonObject = jsonArray.getJSONObject(jsonArray.length()-1);
+        JSONObject data = jsonObject.getJSONObject("data");
+        if(data.has("budget")){
+            BatteryTracker.setBatteryLevel((Integer) data.get("budget"));
+        }
+    }
+    private void accessInfo(String file) throws IOException {
+
+        String content = new String(Files.readAllBytes(Paths.get(file)));
+        JSONArray jsonArray = new JSONArray(content);
+        JSONArray result = new JSONArray();
+        JSONObject jsonObject = jsonArray.getJSONObject(jsonArray.length()-1);
+        JSONObject data = jsonObject.getJSONObject("data");
+
+    //We need to separate the extraction of cost from heading and budget. Heading and budget take care of the initialize Method in Explorer
+        if (data.has("cost")) {
+            cost = (Integer) data.get("cost");
+            if(data.has("extras")){
+                JSONObject extra = data.getJSONObject("extras");
+                if(extra.has("creeks")&&extra.getJSONArray("creeks").length()>0){
+                    JSONArray creekDetails = new JSONArray();
+                    creekDetails.put(new JSONObject().put("name","creek"));
+                    creekDetails.put(new JSONObject().put("coordinates", "xy"));
+                    result.put(creekDetails);
                 }
+                else if(extra.has("sites")&&extra.getJSONArray("sites").length()>0){
+                    JSONArray siteDetails = new JSONArray();
+                    siteDetails.put(new JSONObject().put("name","site"));
+                    siteDetails.put(new JSONObject().put("coordinates", "xy"));
+                    result.put(siteDetails);
+                } else if(extra.has("found")){
+                    found = extra.getString("found");
+                    range = extra.getInt("range");
             }
         }
-       Files.write(Paths.get("/Users/kunxing/Desktop/Y2/Semester2/2AA4/Assignments/a2-rescue-mission-team-115/outputs/info.json"), result.toString(4).getBytes());
+    }
+    //Files.write(Paths.get("/Users/kunxing/Desktop/Y2/Semester2/2AA4/Assignments/a2-rescue-mission-team-115/outputs/info.json"), result.toString(4).getBytes());
+    //Change this to accomodate for all users, not just Kun Xing.
     }
 }
     
