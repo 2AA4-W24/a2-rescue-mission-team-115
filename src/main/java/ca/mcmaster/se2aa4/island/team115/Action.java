@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public class Action {
     public String echo(Direction direction){
-        String strDir = Navigator.enumToString(direction);
+        String strDir = direction.toString();
         JSONObject decision = new JSONObject();
         decision.put("action", "echo");
         decision.put("parameters", (new JSONObject()).put("direction", strDir));
@@ -21,7 +21,7 @@ public class Action {
     public void heading(Direction direction){
         JSONObject decision = new JSONObject();
         JSONObject parameters = new JSONObject();
-        String parameter = Navigator.enumToString(direction);
+        String parameter = direction.toString();
         parameters.put("direction",parameter);
         decision.put("action","heading");
         decision.put("parameters", parameters);

@@ -20,14 +20,16 @@ public class Explorer implements IExplorerRaid {
         logger.info("** Initializing the Exploration Command Center");
         //JSONObject info = new JSONObject(new JSONTokener(new StringReader(s)));
         //logger.info("** Initialization info:\n {}",info.toString(2));
-        //String direction = info.getString("heading");
-        //Integer batteryLevel = info.getInt("budget");
+        // String direction = info.getString("heading");
+        // Integer batteryLevel = info.getInt("budget");
         ExtractInfo extract = new ExtractInfo();
         try {
-            extract.parseJSON(s);
+            extract.parser(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         
         Integer batteryLevel = BatteryTracker.getBatteryLevel();
         //Direction enumDir = extract.getInitialHeading();
@@ -64,7 +66,7 @@ public class Explorer implements IExplorerRaid {
     public void acknowledgeResults(String s) {
         ExtractInfo extract = new ExtractInfo();
         try {
-            extract.parseJSON(s);
+            extract.parser(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
