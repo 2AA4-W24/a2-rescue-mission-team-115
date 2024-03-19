@@ -1,20 +1,20 @@
 package ca.mcmaster.se2aa4.island.team115;
 
  public class BatteryTracker {
-    private static int currBattery;
+    private int currBattery;
 
-    public static void setBatteryLevel(int Battery){
-        currBattery = Battery;
+    public BatteryTracker(int currBattery){
+        this.currBattery = currBattery;
     }
     
-    public static int getBatteryLevel(){
+    public int getBatteryLevel(){
         return currBattery;
     }
 
-    public static void adjustBattery(int cost) {
+    public void adjustBattery(int cost) {
         currBattery = currBattery - cost;
     }
 
     //method for checking if battery level is low
-    //Consider changing static methods to instance methods and create an object, and change extractInfo accordingly
+    //Discuss with team about changing static methods to instance methods and create an object, and change extractInfo accordingly
 }
