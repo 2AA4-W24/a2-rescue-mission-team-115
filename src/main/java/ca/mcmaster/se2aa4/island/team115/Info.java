@@ -6,6 +6,7 @@ public class Info {
     private Integer cost;
     private JSONObject extras;
     private String droneStatus;
+    private Direction direction;
 
     public Info(Integer cost, JSONObject extras, String droneStatus) {
         this.cost = cost;
@@ -13,7 +14,9 @@ public class Info {
         this.droneStatus = droneStatus;
 
     }
-
+    public Direction getDirection(){
+        return direction;
+    }
     public JSONObject getExtras() {
         return extras;
     }
@@ -45,14 +48,14 @@ public class Info {
         if(extras.has("found")){
             return extras.getString("found");
         }
-        return null;
+        return "No Relevant Finding";
     }
 
     public Integer echoRange(){
         if(extras.has("found")){
             return extras.getInt("range");
         }
-        return null;
+        return 0;
     }
 }
 

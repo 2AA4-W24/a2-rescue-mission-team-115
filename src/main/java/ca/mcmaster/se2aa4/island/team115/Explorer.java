@@ -16,6 +16,7 @@ public class Explorer implements IExplorerRaid {
     int i = 0;
     boolean scan = false;
 
+
     @Override
     public void initialize(String s) {
         logger.info("** Initializing the Exploration Command Center");
@@ -33,10 +34,10 @@ public class Explorer implements IExplorerRaid {
     }
 
     @Override
-    public String takeDecision() {
+    public String takeDecision(){
         //String decisionString = drone.beginExploration();
         JSONObject decision = new JSONObject();
-        decision = drone.beginExploration();
+        decision = drone.beginExploration(drone);
         // decision.put("action", "echo");
         // decision.put("parameters", (new JSONObject().put("direction", "E")));
         

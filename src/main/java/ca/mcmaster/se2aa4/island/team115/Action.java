@@ -51,5 +51,9 @@ public class Action {
     public JSONObject getDecision(){
         return decision;
     }
+    
+    public void reset(){
+        decision.remove("parameters");
+    }
 }
 
