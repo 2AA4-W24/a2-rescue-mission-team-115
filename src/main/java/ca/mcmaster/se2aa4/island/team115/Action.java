@@ -8,23 +8,24 @@ public class Action {
  
     private JSONObject decision = new JSONObject();
     private JSONObject parameters = new JSONObject();
+    private String action = "action";
 
     public void echo(Direction direction){
         String strDir = direction.toString();
         
         //JSONObject decision = new JSONObject();
-        decision.put("action", "echo");
+        decision.put(action, "echo");
         decision.put("parameters", (new JSONObject()).put("direction", strDir));
         decString = decision.toString();
     }
     public void fly(){
         //JSONObject decision = new JSONObject();
-        decision.put("action","fly");
+        decision.put(action,"fly");
         decString = decision.toString();
     }
     public void scan(){
         //JSONObject decision = new JSONObject();
-        decision.put("action","scan");
+        decision.put(action,"scan");
         decString = decision.toString();
     }
     public void heading(Direction direction){
@@ -32,14 +33,14 @@ public class Action {
         //JSONObject parameters = new JSONObject();
         String parameter = direction.toString();
         parameters.put("direction",parameter);
-        decision.put("action","heading");
+        decision.put(action,"heading");
         decision.put("parameters", parameters);
 
         decString = decision.toString();
     }
     public void stop(){
         //JSONObject decision = new JSONObject();
-        decision.put("action","stop");
+        decision.put(action,"stop");
         decString = decision.toString();
 
     }
