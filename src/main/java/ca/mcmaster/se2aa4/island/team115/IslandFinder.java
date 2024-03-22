@@ -5,232 +5,159 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class IslandFinder {
-
-    private boolean echoRight = true;
-    private boolean changeHeading = false;
-
-
-    private boolean foundGround = false;
-    private int range;
-    private boolean activateForwardEcho = true;
-    private boolean activateFlyMode = false;
-    private boolean activateFlyMode2 = false;
-    private boolean activateSearchPhase = false;
-    private boolean activateScanPhase = false;
-
-    private boolean oddScan = true;
-    private boolean shouldScan = false;
-
-    private int i = 0;
-
-    private Info info;
-
-    private JSONObject extraInfo;
-
-
-    private boolean test = true;
-
-    private boolean start = true;
-
-    private boolean groundForward = false;
-
-    private int phase = 1;
-    private int searchPhase = 1;
-    private int j = 0;
-    private int z = 1;
-    private boolean scanOOB = false;
-    // private boolean groundLeft = false;
-    // private boolean groundRight = false;
-
-
+    private boolean findingComplete = false;
+    private boolean turnRightOnUTurn;
+    private IslandFinderStates state;
     private Direction currentDirection;
-    private Direction echoDirection;
-    private Action action = new Action();
     private Drone drone;
+    private Info info;
+    private Action action = new Action();
+    
+    public IslandFinder(){
+        state = new Fly();
+    }
 
-    public void setDrone (Drone drone, Info info){
+    public boolean shouldTurnRightOnUTurn(){
+        if(turnRightOnUTurn){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isComplete(){
+        return findingComplete;
+    }
+
+    public void setDrone(Drone drone, Info info) {
         this.drone = drone;
         this.info = info;
     }
 
+    public void setState(IslandFinderStates state){
+        this.state = state;
+    }
+    
     public JSONObject locateIsland(Direction currentDirection){
-        
         action.reset();
         this.currentDirection = currentDirection;
-        try{
-            checkGround(info.getExtras());
-            if (activateScanPhase && shouldScan){
-                checkScan(info.getExtras());
-            }
-            
-        }catch(NullPointerException ne){
-            
-        }
-
-        if(foundGround || activateFlyMode || activateSearchPhase || activateScanPhase){
-            if(currentDirection.equals(echoDirection) || activateScanPhase){
-                activateFlyMode = true;
-                if (i<range){
-                    action.fly();
-                    i++;
-                }else if (i == range){
-                    action.scan();
-                    activateFlyMode = false;
-                    activateScanPhase = true;
-                    // phase = 4;
-                    i++;
-                }else {
-                    searchIsland();
-                } 
-            }else{
-                action.heading(echoDirection);
-                drone.updateDirection(echoDirection);
-                activateForwardEcho = true;
-                foundGround = false;
-                phase = 1;
-            }
-        }else{
-            if(activateForwardEcho){
-                action.echo(currentDirection);
-                activateForwardEcho = false;
-            }else{
-                switch(phase){
-                    case 1:
-                        echoDirection = currentDirection.rightDir();
-                        action.echo(echoDirection);
-                        phase++;
-                        break;
-                    case 2:
-                        echoDirection = currentDirection.leftDir();
-                        action.echo(echoDirection);
-                        phase++;
-                        break;
-                    case 3:
-                        action.fly();
-                        phase = 1;
-                        break;
-                    default:
-                        action.stop();
-                }
-            }
-        }
-        
-        return action.getDecision();
-    
-    }
-
-    private void searchIsland(){
-        switch (searchPhase){
-            case 1:
-                action.fly();
-                searchPhase++;
-                shouldScan = false;
-                break;
-            case 2:
-                shouldScan = true;
-                if (scanOOB){
-                    action.echo(currentDirection);
-                    searchPhase++;
-                }else{
-                    action.scan();
-                    searchPhase--;
-                    j++;
-                }
-                break;
-            case 3: 
-                if(foundGround || activateFlyMode2){
-                    if(z<range){
-                        activateFlyMode2 = true;
-                        action.fly();
-                        z++;
-                        break;
-                    }else{
-                        activateFlyMode2 = false;
-                        searchPhase = 1;
-                        z=0;
-                    }
-                }else{
-                    searchPhase++;
-                }
-            case 4:
-                if (oddScan == true){
-                    drone.updateDirection(currentDirection.rightDir());
-                    action.heading(currentDirection.rightDir());
-                } else{
-                    drone.updateDirection(currentDirection.leftDir());
-                    action.heading(currentDirection.leftDir());
-                }
-                searchPhase++;
-                break;
-            case 5: 
-            // case 5 and 6 need to be changed depending on the direction of entry 
-            if (oddScan == true){
-                drone.updateDirection(currentDirection.rightDir());
-                action.heading(currentDirection.rightDir());
-                oddScan = false;
-            } else{
-                drone.updateDirection(currentDirection.leftDir());
-                action.heading(currentDirection.leftDir());
-                oddScan = true;
-            }
-                searchPhase++;
-                break;
-            case 6:
-                action.echo(currentDirection);
-                searchPhase++;
-                break;
-            case 7:
-                if(foundGround || activateFlyMode2){
-                    if(z<range){
-                        activateFlyMode2 = true;
-                        z++;
-                    }else{
-                        activateFlyMode2 = false;
-                        searchPhase = 1;
-                        z=0;
-                    }
-                }else{
-                    action.stop();
-                    break;
-                }
-                action.fly();
-                break;
-            default:
-                break;
-        }
-    }
-    public void updateState(Info info){
-        
+        return state.handle(this);
     }
     
-    private void checkScan (JSONObject extras){
-        if(extras.has("biomes")){
-            JSONArray arr1 = extras.getJSONArray("biomes");
-            if(arr1.length() == 1){
-                Object bio = arr1.get(0);
-                if (bio.equals("OCEAN")){
-                    scanOOB = true;
-                    return;
-                }
-            }
-        }
-        scanOOB = false;
-    }
+    private interface IslandFinderStates {
+        public JSONObject handle(IslandFinder finder);
+    } 
 
-    private void checkGround(JSONObject extras){
-        if(extras.has("found")){
+    private class Fly implements IslandFinderStates{
+        @Override
+        public JSONObject handle(IslandFinder finder){
+            action.echo(currentDirection);
+            finder.setState(new EchoForward());
+            return action.getDecision();
+        }
+    }
+    private class EchoForward implements IslandFinderStates{
+        @Override
+        public JSONObject handle(IslandFinder finder){
+            JSONObject extras = info.getExtras();
             String finding = extras.getString("found");
             if(finding.equals("GROUND")){
-                range = extras.getInt("range");
-                foundGround = true;
-                return;
+                Integer range = extras.getInt("range");
+                action.fly();
+                finder.setState(new FlyToIsland(range));
             }else{
-                foundGround = false;
-                return;
+                action.echo(currentDirection.rightDir());
+                finder.setState(new EchoRight());
             }
+            return action.getDecision();
         }
-        foundGround = false;
     }
-}
+    private class FlyToIsland implements IslandFinderStates{
+        private Integer range;
+        private Integer flyCount;
+        private FlyToIsland(Integer range){
+            this.range = range;
+            flyCount = 0;
+        }
+        @Override
+        public JSONObject handle(IslandFinder finder){
+            
+            if(flyCount<range){
+                action.fly();
+                flyCount++;
+            }else{
+                action.scan();
+                findingComplete = true;
+                finder.setState(new TempStop());
+            }
+            return action.getDecision();
+        }
+    }
 
+    private class EchoRight implements IslandFinderStates{
+        @Override
+        public JSONObject handle(IslandFinder finder){
+            JSONObject extras = info.getExtras();
+            String finding = extras.getString("found");
+            if(finding.equals("GROUND")){
+                action.heading(currentDirection.rightDir());
+                drone.updateDirection(currentDirection.rightDir());
+                finder.setState(new TurnRight());
+            }else{
+                action.echo(currentDirection.leftDir());
+                finder.setState(new EchoLeft());
+                
+            }
+            return action.getDecision();
+        }
+    }
+
+    private class EchoLeft implements IslandFinderStates{
+        @Override
+        public JSONObject handle(IslandFinder finder){
+            JSONObject extras = info.getExtras();
+            String finding = extras.getString("found");
+            if(finding.equals("GROUND")){
+                action.heading(currentDirection.leftDir());
+                drone.updateDirection(currentDirection.leftDir());
+                finder.setState(new TurnLeft());
+            }else{
+                action.fly();
+                finder.setState(new Fly());
+                
+            }
+            return action.getDecision();
+        }
+    }
+
+    private class TurnRight implements IslandFinderStates{
+        @Override
+        public JSONObject handle(IslandFinder finder){
+            action.echo(currentDirection);
+            finder.setState(new EchoForward());
+            return action.getDecision();
+        }
+    }
+    private class TurnLeft implements IslandFinderStates{
+        @Override
+        public JSONObject handle(IslandFinder finder){
+            action.echo(currentDirection);
+            finder.setState(new EchoForward());
+            return action.getDecision();
+        }
+    }
+    private class TempStop implements IslandFinderStates{
+        @Override
+        public JSONObject handle(IslandFinder finder){
+            action.stop();
+            return action.getDecision();
+        }
+    }
+    // private class EchoForward implements IslandFinderStates extends Echo{
+    //     @Override
+    //     public JSONObject handle() {
+    //         if ()
+    //     }
         
+    // }
+
+}
