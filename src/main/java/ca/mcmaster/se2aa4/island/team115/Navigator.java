@@ -49,7 +49,12 @@ public class Navigator {
     }
 
     public void turnRight(){
-        this.direction = direction.leftDir();
+        this.direction = direction.rightDir();
     }
-
+    public int getX(){
+        return coord.getX();
+    }
+    public int getY(){
+        return coord.getY();
+    }
 }
