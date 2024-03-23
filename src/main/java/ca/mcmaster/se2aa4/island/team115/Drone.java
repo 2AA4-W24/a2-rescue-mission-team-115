@@ -14,7 +14,7 @@ public class Drone {
     private Direction currentDirection;
     private Direction initialDirection;
     private IslandFinder finder = new IslandFinder();
-    private GridSearcher searcher = new GridSearcher();
+    //private GridSearcher searcher = new GridSearcher();
     // private State state;
     private Info currentInfo;
 
@@ -31,15 +31,15 @@ public class Drone {
 
 
     public JSONObject beginExploration(Drone drone){
-        if(finder.isComplete()){
+        /*if(finder.isComplete()){
             searcher.setDrone(drone, currentInfo);
             return searcher.findCreeks(currentDirection);
             //Searcher is NOT complete yet. I am still working on it so you might not be able to work on it.
             //If you want to work with the test cases, you might wanna adjust the method to completely remove searcher for now.
-        }else{
+        }else{*/
             finder.setDrone(drone, currentInfo);
             return finder.locateIsland(currentDirection);
-        }
+        //}
     }
 
     public void updateStatus(Integer cost, String status){
@@ -58,6 +58,9 @@ public class Drone {
 
     public JSONObject extraInfo(){
         return currentInfo.getExtras();
+    }
+    public Direction getCurrentDirection(){
+        return currentDirection;
     }
     //Also might delete this method
 
