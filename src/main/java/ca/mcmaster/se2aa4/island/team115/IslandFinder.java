@@ -163,19 +163,5 @@ public class IslandFinder {
             return action.getDecision();
         }
     }
-    // private class TempStop implements IslandFinderStates{
-    //     @Override
-    //     public JSONObject handle(IslandFinder finder){
-    //         action.stop();
-    //         return action.getDecision();
-    //     }
-    // }
-    // private class EchoForward implements IslandFinderStates extends Echo{
-    //     @Override
-    //     public JSONObject handle() {
-    //         if ()
-    //     }
-        
-    // }
 
 }
