@@ -3,12 +3,11 @@ package ca.mcmaster.se2aa4.island.team115;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import eu.ace_design.island.game.actions.Fly;
-
 public class GridSearcher implements POIFinder{
     private IslandFinder finder = new IslandFinder();
     private boolean turnRightOnUTurn = finder.shouldTurnRightOnUTurn(); //When UTurning, checks whether the direction should be to the right or left
     private boolean searchingComplete = false;
+    private POIMap map = new POIMap();
     private GridSearcherStates state;
     private Direction currentDirection;
     private Coordinates coordinates;
@@ -23,6 +22,12 @@ public class GridSearcher implements POIFinder{
     public boolean isComplete(){
         return searchingComplete;
     }
+    
+    public JSONObject stopExploration(){
+        action.reset();
+        action.stop();
+        return action.getDecision();
+    }
 
     public void setDrone(Drone drone, Info info, Coordinates coordinates) {
         this.drone = drone;
@@ -32,6 +37,22 @@ public class GridSearcher implements POIFinder{
 
     public void setState(GridSearcherStates state){
         this.state = state;
+    }
+
+    private void checkPOI(JSONObject extras){
+        JSONArray creeks = extras.getJSONArray("creeks");
+        JSONArray sites = extras.getJSONArray("sites");
+        if(creeks.length()== 1){
+            String creekID = creeks.getString(0);
+            map.addPOI(creekID, coordinates);
+        }
+        if(sites.length()== 1){
+            map.setEmergencySpot(coordinates);
+        }
+    }
+
+    public String getClosestCreek(){
+       return map.calculateClosestCreek();
     }
     
     @Override
@@ -58,6 +79,7 @@ public class GridSearcher implements POIFinder{
         public JSONObject handle(GridSearcher searcher){
             JSONObject extras = info.getExtras();
             JSONArray biomes = extras.getJSONArray("biomes");
+            checkPOI(extras);
             if(biomes.length()==1){
                 Object bio = biomes.get(0);
                 if (bio.equals("OCEAN")){

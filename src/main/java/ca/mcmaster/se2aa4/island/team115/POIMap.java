@@ -1,34 +1,32 @@
 package ca.mcmaster.se2aa4.island.team115;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class PointsOfInterestMap{
-    private Coordinates emergencySpot;
-    public void setEmergencySpot(Coordinates coordinate){
-        if (emergencySpot == null) {
-            emergencySpot = coordinate;
-        }
-
-    }
+public class POIMap{
+    private Coordinates emergencySpot = new Coordinates(0,0);
+    //if we don't find the emergencySpot, it will return the creek that is closest to the starting point.
     private Map<String, Coordinates> pois;
 
-    public PointsOfInterestMap(){
+    public POIMap(){
         pois = new LinkedHashMap<>();
     }
 
-    public void addPointOfInterest(String uid, Integer X, Integer Y){
-        pois.put(uid, new Coordinates(X, Y));
+    public void setEmergencySpot(Coordinates coordinate){
+        emergencySpot = coordinate;
     }
 
-    public Coordinates getPOISCoordinates(String uid){
+    public void addPOI(String uid, Coordinates coordinates){
+        pois.put(uid, coordinates);
+    }
+
+    public Coordinates getPOICoordinates(String uid){
         return pois.get(uid);
     }
 
     public String calculateClosestCreek() {
         double smallestDistance = Double.MAX_VALUE;
-        String closestCreekUid = null;
+        String closestCreekUid = " ";
 
         for (Map.Entry<String, Coordinates> entry : pois.entrySet()) {
             String uid = entry.getKey();
