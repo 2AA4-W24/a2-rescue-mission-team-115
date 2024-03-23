@@ -18,11 +18,6 @@ public class IslandFinder {
         state = new Fly();
     }
 
-    public JSONObject stopExploration(){
-        action.reset();
-        action.stop();
-        return action.getDecision();
-    }
     public boolean shouldTurnRightOnUTurn(){
         if(turnRightOnUTurn){
             return true;
@@ -90,13 +85,13 @@ public class IslandFinder {
         @Override
         public JSONObject handle(IslandFinder finder){
             
-            if(flyCount<range){
+            if(flyCount<range-1){
                 action.fly();
                 coordinates.flyForward();
                 drone.updateCoordinates(coordinates);
                 flyCount++;
             }else{
-                action.scan();
+                action.fly();
                 findingComplete = true;
             }
             return action.getDecision();
