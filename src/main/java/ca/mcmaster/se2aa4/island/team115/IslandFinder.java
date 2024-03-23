@@ -9,6 +9,7 @@ public class IslandFinder {
     private boolean turnRightOnUTurn;
     private IslandFinderStates state;
     private Direction currentDirection;
+    private Coordinates coordinates;
     private Drone drone;
     private Info info;
     private Action action = new Action();
@@ -17,6 +18,11 @@ public class IslandFinder {
         state = new Fly();
     }
 
+    public JSONObject stopExploration(){
+        action.reset();
+        action.stop();
+        return action.getDecision();
+    }
     public boolean shouldTurnRightOnUTurn(){
         if(turnRightOnUTurn){
             return true;
@@ -28,9 +34,10 @@ public class IslandFinder {
         return findingComplete;
     }
 
-    public void setDrone(Drone drone, Info info) {
+    public void setDrone(Drone drone, Info info, Coordinates coordinates) {
         this.drone = drone;
         this.info = info;
+        this.coordinates = coordinates;
     }
 
     public void setState(IslandFinderStates state){
@@ -63,6 +70,8 @@ public class IslandFinder {
             if(finding.equals("GROUND")){
                 Integer range = extras.getInt("range");
                 action.fly();
+                coordinates.flyForward();
+                drone.updateCoordinates(coordinates);
                 finder.setState(new FlyToIsland(range));
             }else{
                 action.echo(currentDirection.rightDir());
@@ -83,11 +92,12 @@ public class IslandFinder {
             
             if(flyCount<range){
                 action.fly();
+                coordinates.flyForward();
+                drone.updateCoordinates(coordinates);
                 flyCount++;
             }else{
                 action.scan();
                 findingComplete = true;
-                finder.setState(new TempStop());
             }
             return action.getDecision();
         }
@@ -100,8 +110,11 @@ public class IslandFinder {
             String finding = extras.getString("found");
             if(finding.equals("GROUND")){
                 action.heading(currentDirection.rightDir());
+                coordinates.turnRight();
                 drone.updateDirection(currentDirection.rightDir());
+                drone.updateCoordinates(coordinates);
                 finder.setState(new TurnRight());
+                turnRightOnUTurn = false;
             }else{
                 action.echo(currentDirection.leftDir());
                 finder.setState(new EchoLeft());
@@ -118,10 +131,15 @@ public class IslandFinder {
             String finding = extras.getString("found");
             if(finding.equals("GROUND")){
                 action.heading(currentDirection.leftDir());
+                coordinates.turnLeft();
                 drone.updateDirection(currentDirection.leftDir());
+                drone.updateCoordinates(coordinates);
                 finder.setState(new TurnLeft());
+                turnRightOnUTurn = true;
             }else{
                 action.fly();
+                coordinates.flyForward();
+                drone.updateCoordinates(coordinates);
                 finder.setState(new Fly());
                 
             }
@@ -145,13 +163,13 @@ public class IslandFinder {
             return action.getDecision();
         }
     }
-    private class TempStop implements IslandFinderStates{
-        @Override
-        public JSONObject handle(IslandFinder finder){
-            action.stop();
-            return action.getDecision();
-        }
-    }
+    // private class TempStop implements IslandFinderStates{
+    //     @Override
+    //     public JSONObject handle(IslandFinder finder){
+    //         action.stop();
+    //         return action.getDecision();
+    //     }
+    // }
     // private class EchoForward implements IslandFinderStates extends Echo{
     //     @Override
     //     public JSONObject handle() {
