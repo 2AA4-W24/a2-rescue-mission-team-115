@@ -29,35 +29,15 @@ public class Explorer implements IExplorerRaid {
         drone = new Drone (batteryLevel, direction);
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
-        
-        //Direction dir = Navigator.stringToEnum(direction);
     
     }
 
     @Override
     public String takeDecision(){
-        //String decisionString = drone.beginExploration();
         JSONObject decision = new JSONObject();
         decision = drone.beginExploration(drone);
-        // decision.put("action", "echo");
-        // decision.put("parameters", (new JSONObject().put("direction", "E")));
         
-        // decision.put("action", "echo");
-        // decision.put("parameters", (new JSONObject()).put("direction", "E"));
-        // decision.put("parameters", (new JSONObject()).put("direction", "S"));
-        // if(scan){
-        //     decision.put("action", "scan");
-        //     scan = false;
-        // }else if(i>10){
-        //     decision.put("action", "stop");
-        // }else{
-        //     decision.put("action", "fly");
-        //     scan = true;
-        //     i++;
-        // }
-        //logger.info("** Decision: {}",decisionString);
         logger.info("** Decision: {}",decision.toString());
-        //return decisionString;
         return decision.toString();
     }
 
