@@ -13,6 +13,9 @@ public class Coordinates {
     public void setDirection (Direction direction){
         this.direction = direction;
     }
+    public Direction getDirection() {
+        return this.direction;
+    }
     public int getX(){
         return X;
     }
@@ -40,7 +43,6 @@ public class Coordinates {
     }
 
     public void turnLeft(){
-        this.direction = direction.leftDir();
         switch(direction){
             case Direction.N:
                 Y++;
@@ -59,11 +61,11 @@ public class Coordinates {
                 X--;
                 break;
         }
+        this.direction = direction.leftDir();
 
     }
 
     public void turnRight(){
-        this.direction = direction.leftDir();
         switch(direction){
             case Direction.N:
                 Y++;
@@ -82,5 +84,6 @@ public class Coordinates {
                 X--;
                 break;
         }
+        this.direction = direction.rightDir();
     }
 }
