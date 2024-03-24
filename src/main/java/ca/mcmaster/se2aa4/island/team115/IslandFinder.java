@@ -158,5 +158,25 @@ public class IslandFinder {
             return action.getDecision();
         }
     }
-
-}
+    public void stateChangeFly() {
+        this.state = new Fly();
+    }
+    public void stateChangeEchoRight() {
+        this.state = new EchoRight();
+    }
+    public void stateChangeEchoLeft() {
+        this.state = new EchoLeft();
+    }
+    public void stateChangeTurnRight() {
+        this.state = new TurnRight();
+    }
+    public void stateChangeTurnLeft() {
+        this.state = new TurnLeft();
+    }
+    public void stateChangeEchoForward() {
+        this.state = new EchoForward();
+    }
+    public void stateChangeFlyIsland(Integer range) {
+        this.state = new FlyToIsland(range);
+    }
+    }
