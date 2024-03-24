@@ -57,7 +57,9 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String deliverFinalReport() {
+        Integer finalBattery = drone.getBattery();
         String creekID = drone.getClosestCreekID();
+        logger.info("The final drone battery is: " + finalBattery);
         logger.info("The ID of the closest creek is: " + creekID);
         return creekID;
     }

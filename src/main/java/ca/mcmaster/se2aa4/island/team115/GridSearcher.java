@@ -14,6 +14,7 @@ public class GridSearcher implements POIFinder{
     private Drone drone;
     private Info info;
     private Action action = new Action();
+    private Integer scanCount = 0;
     
     public GridSearcher(){
         state = new Fly();
@@ -231,9 +232,13 @@ public class GridSearcher implements POIFinder{
                 drone.updateCoordinates(coordinates);;
                 searcher.setState(new FlyToIsland(range));
             } else {
+                scanCount++;
+                if(scanCount == 3){
+                    searchingComplete = true;
+                }
                 action.fly();
                 coordinates.flyForward();
-                drone.updateCoordinates(coordinates);;
+                drone.updateCoordinates(coordinates);
                 searcher.setState(new FlyToPrepareForSpecialTurn(range));
             }
             return action.getDecision();
