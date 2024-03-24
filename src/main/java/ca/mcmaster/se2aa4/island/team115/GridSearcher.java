@@ -338,4 +338,10 @@ public class GridSearcher implements POIFinder{
             return action.getDecision();
         }
     }
+
+    public POIMap getTestPOIMap() {
+        return this.map;
+    }
+    
+
 }
