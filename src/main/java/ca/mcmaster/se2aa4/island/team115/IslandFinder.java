@@ -1,7 +1,5 @@
 package ca.mcmaster.se2aa4.island.team115;
 
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class IslandFinder {
@@ -179,4 +177,5 @@ public class IslandFinder {
     public void stateChangeFlyIsland(Integer range) {
         this.state = new FlyToIsland(range);
     }
-    }
+
+}

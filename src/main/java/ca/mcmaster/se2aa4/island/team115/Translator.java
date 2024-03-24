@@ -1,12 +1,7 @@
 package ca.mcmaster.se2aa4.island.team115;
 
 import org.json.JSONObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class Translator {
-    //read response from decisions, convert it into usable info aka not JSON object
-    private final Logger logger = LogManager.getLogger();
 
     public Info translate(JSONObject response) {
         Info info = new Info(getCost(response), getExtras(response), getStatus(response));

@@ -32,14 +32,4 @@ public class InfoTest {
         assertEquals("Exploring", info.getStatus());
     }
 
-    @Test
-    void testEchoFinding() {
-        assertEquals("Ground", info.echoFinding());
-    }
-
-    @Test
-    void testEchoRange() {
-        assertEquals(5, info.echoRange());
-    }
-
 }

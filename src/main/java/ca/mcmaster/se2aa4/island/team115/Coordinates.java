@@ -13,9 +13,6 @@ public class Coordinates {
     public void setDirection (Direction direction){
         this.direction = direction;
     }
-    public Direction getDirection() {
-        return this.direction;
-    }
     public int getX(){
         return X;
     }
@@ -85,5 +82,8 @@ public class Coordinates {
                 break;
         }
         this.direction = direction.rightDir();
+    }
+    public Direction getDirection(){
+        return direction;
     }
 }
