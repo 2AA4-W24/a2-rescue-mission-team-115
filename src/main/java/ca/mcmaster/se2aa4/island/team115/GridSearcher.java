@@ -342,6 +342,15 @@ public class GridSearcher implements POIFinder{
     public POIMap getTestPOIMap() {
         return this.map;
     }
-    
+
+    public void simulateScenario(String scenarioName) {
+        switch (scenarioName) {
+            case "ObstacleAhead":
+                // edit
+                break;
+            //expand
+        }
+    }
+
 
 }
