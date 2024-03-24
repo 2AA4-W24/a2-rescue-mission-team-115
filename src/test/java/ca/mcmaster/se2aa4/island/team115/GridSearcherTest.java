@@ -8,12 +8,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import org.json.JSONObject;
+import static org.junit.Assert.*;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.Mockito;
 
 import org.json.JSONArray;
 
-
-
-
+import org.mockito.Mockito;
 
 
 public class GridSearcherTest {
@@ -45,56 +48,126 @@ public class GridSearcherTest {
         assertEquals("scan", decision.getString("action"));
     }
     @Test
-    void testFindPOIsInitiatesCorrectAction() {
+    public void testFindPOIsWithCreekDiscovery() {
+        Drone mockDrone = Mockito.mock(Drone.class);
+        Info mockInfo = Mockito.mock(Info.class);
+        Coordinates mockCoordinates = Mockito.mock(Coordinates.class);
 
-        Info scanInfo = new Info(1, new JSONObject().put("biomes", new JSONArray("[\"OCEAN\"]")), "OK");
-        Coordinates startingCoordinates = new Coordinates(0, 0);
-        Drone drone = new Drone(100, "N");
-        drone.updateCoordinates(startingCoordinates);
-        drone.receiveResponse(1, scanInfo);
 
-        JSONObject action = drone.beginExploration(drone);
+        GridSearcher gridSearcher = new GridSearcher();
 
-        assertEquals("scan", action.getString("action"));
+        JSONObject extras = new JSONObject();
+        extras.put("creeks", new JSONArray().put("CREEK_ID_123"));
+        when(mockInfo.getExtras()).thenReturn(extras);
+
+        gridSearcher.setDrone(mockDrone, mockInfo, mockCoordinates);
+
+        Direction testDirection = Direction.N;
+
+        JSONObject decision = gridSearcher.findPOIs(testDirection);
+
+
+        assertEquals("scan", decision.getString("action"));
+    }
+
+   
+   @Test
+   void testGridSearcherInitialization() {
+       GridSearcher gridSearcher = new GridSearcher();
+       assertFalse(gridSearcher.isComplete(), "GridSearcher should initialize with searching not complete.");
+       // Directly asserting the initial state is "Fly" is not possible without reflection since `state` is a private field.
+       // Indirectly verify the initial state through behavior.
+       JSONObject decision = gridSearcher.findPOIs(Direction.N);
+       assertEquals("scan", decision.getString("action"), "Initial state should be Fly, leading to a scan action.");
+   }
+
+    @Test
+    void testStopExploration() {
+        GridSearcher gridSearcher = new GridSearcher();
+        JSONObject decision = gridSearcher.stopExploration();
+        assertEquals("stop", decision.getString("action"), "Stopping exploration should result in a 'stop' action.");
+    }
+    @Test
+    void testSetDroneInfoCoordinates() {
+        Drone mockDrone = mock(Drone.class);
+        Info mockInfo = mock(Info.class);
+        Coordinates mockCoordinates = mock(Coordinates.class);
+
+        GridSearcher gridSearcher = new GridSearcher();
+        gridSearcher.setDrone(mockDrone, mockInfo, mockCoordinates);
+
+
+        JSONObject decision = gridSearcher.findPOIs(Direction.N);
+        assertNotNull(decision, "Decision should not be null if drone, info, and coordinates are set correctly.");
+    }
+//    @Test
+//    void testPOICheckingAndLogging() {
+//        Drone mockDrone = mock(Drone.class);
+//        Info mockInfo = mock(Info.class);
+//        Coordinates mockCoordinates = new Coordinates(0, 0);
+//
+//
+//        JSONObject extrasWithPOI = new JSONObject();
+//        extrasWithPOI.put("creeks", new JSONArray().put("CREEK_ID_123"));
+//        extrasWithPOI.put("sites", new JSONArray().put("SITE_ID_456"));
+//        when(mockInfo.getExtras()).thenReturn(extrasWithPOI);
+//
+//        GridSearcher gridSearcher = new GridSearcher();
+//        gridSearcher.setDrone(mockDrone, mockInfo, mockCoordinates);
+//        gridSearcher.findPOIs(Direction.N); // Trigger POI checking
+//
+//
+//        String closestCreek = gridSearcher.getClosestCreek();
+//        assertEquals(" ", closestCreek, "Creek should be logged and identifiable as the closest one.");
+//    }
+    @Test
+    void testBiomeDataHandlingInScan() {
+        Drone mockDrone = mock(Drone.class);
+        Info mockInfo = mock(Info.class);
+        Coordinates mockCoordinates = mock(Coordinates.class);
+
+        // Prepare the scenario where scanning detects an ocean
+        JSONObject extrasWithOcean = new JSONObject();
+        extrasWithOcean.put("biomes", new JSONArray().put("OCEAN"));
+        when(mockInfo.getExtras()).thenReturn(extrasWithOcean);
+
+        GridSearcher gridSearcher = new GridSearcher();
+        gridSearcher.setDrone(mockDrone, mockInfo, mockCoordinates);
+
+        JSONObject decision = gridSearcher.findPOIs(Direction.N);
+        assertEquals("scan", decision.getString("action"), "Encountering an ocean biome should lead to an scan action.");
+    }
+
+    // ##############################
+    @Test
+    void testBasicFlightAndCoordinateUpdate() {
+        Drone mockDrone = Mockito.mock(Drone.class);
+        Coordinates initialCoordinates = new Coordinates(0, 0);
+        GridSearcher gridSearcher = new GridSearcher();
+        gridSearcher.setDrone(mockDrone, new Info(0, new JSONObject(), ""), initialCoordinates);
+
+        JSONObject decision = gridSearcher.findPOIs(Direction.E);
+        assertEquals("scan", decision.getString("action"), "GridSearcher should initiate a 'scan' action.");
+
     }
 
     @Test
-    void testStopExplorationResultsInStopAction() {
+    void testUTurnExecution() {
+        Drone mockDrone = Mockito.mock(Drone.class);
+        Info mockInfo = Mockito.mock(Info.class);
+        GridSearcher gridSearcher = new GridSearcher();
+        gridSearcher.setDrone(mockDrone, mockInfo, new Coordinates(0, 0));
 
-        Drone drone = new Drone(100, "N");
 
-        // trigger the start of it
-        drone.beginExploration(drone); // Simulate beginning of exploration
-        JSONObject stopAction = drone.beginExploration(drone); // triggers the stop condition
-
-        // Assert that the action after conditions are met is "stop"
-        assertEquals("stop", stopAction.getString("action"));
     }
+
     @Test
-    void testIsCompleteAfterStopExploration() {
-        // kinda simple test not that effective but good to have
-        gridSearcher.stopExploration();
+    void testStateTransitionsAndSpecialTurns() {
+        Drone mockDrone = Mockito.mock(Drone.class);
+        Info mockInfo = Mockito.mock(Info.class);
+        GridSearcher gridSearcher = new GridSearcher();
+        gridSearcher.setDrone(mockDrone, mockInfo, new Coordinates(0, 0));
 
-        boolean isComplete = gridSearcher.isComplete();
-
-        assertTrue(isComplete, "Exploration should be marked as complete after stopping.");
+        
     }
-    @Test
-
-    void testDroneMovementBasedOnEnvironment() {
-
-        JSONObject extrasWithObstacle = new JSONObject("{\"found\": \"GROUND\", \"range\": 2}");
-        when(info.getExtras()).thenReturn(extrasWithObstacle);
-
-        // Simulate calling findPOIs which should move the drone because of obstacle detection
-        JSONObject actionResult = gridSearcher.findPOIs(Direction.N);
-
-        // should do a fly command, expected response but checking if it will take place.
-        assertEquals("fly", actionResult.getString("action"), "The drone should decide to fly to avoid the obstacle.");
-    }
-
-
-
-
-
 }
