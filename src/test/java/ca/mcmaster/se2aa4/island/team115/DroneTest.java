@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DroneTest {
     private Drone drone;
-    private POIMap POIMap;
 
 
     @BeforeEach
@@ -69,5 +68,5 @@ class DroneTest {
     void closestCreekNullWithoutInfo() {
         String closestcreek = drone.getClosestCreekID();
         assertNull(closestcreek);
-}
+    }
 }

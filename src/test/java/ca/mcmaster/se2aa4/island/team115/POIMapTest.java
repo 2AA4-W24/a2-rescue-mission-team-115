@@ -14,14 +14,14 @@ public class POIMapTest {
     }
 
     @Test
-    void testAddPOIAndRetrieve() {
+    void addPOIAndCheck() {
         Coordinates coordinates = new Coordinates(10, 20);
         POIMap.addPOI("creek1", coordinates);
         assertEquals(coordinates, POIMap.getPOICoordinates("creek1"));
     }
 
     @Test
-    void testSetEmergencySpot() {
+    void checkEmergencySite() {
         Coordinates emergencyCoordinates = new Coordinates(5, 5);
         POIMap.setEmergencySpot(emergencyCoordinates);
         POIMap.addPOI("creek2", new Coordinates(10, 10));
@@ -30,7 +30,7 @@ public class POIMapTest {
     }
 
     @Test
-    void testCalculateClosestCreekWithMultiplePOIs() {
+    void calculateClosestCreek() {
         POIMap.addPOI("creek1", new Coordinates(0, 10));
         POIMap.addPOI("creek2", new Coordinates(10, 10));
         POIMap.setEmergencySpot(new Coordinates(0, 0));
@@ -39,13 +39,13 @@ public class POIMapTest {
     }
 
     @Test
-    void testCalculateClosestCreekWhenNoPOIs() {
+    void closestCreekWhenNoCreeks() {
         String closestCreek = POIMap.calculateClosestCreek();
         assertEquals(" ", closestCreek);
     }
 
     @Test
-    void testCalculateClosestCreekWithSameDistancePOIs() {
+    void closestCreekWithDistances() {
         POIMap.setEmergencySpot(new Coordinates(0, 0));
         POIMap.addPOI("creek1", new Coordinates(0, 10)); 
         POIMap.addPOI("creek3", new Coordinates(10, 0)); 

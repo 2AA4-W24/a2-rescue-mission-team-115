@@ -43,7 +43,7 @@ public class IslandFinderTest {
     }
 
     @Test
-    void checkcCompleteAfter() {
+    void checkCompleteAfter() {
         IslandFinder islandFinder = new IslandFinder();
         boolean isCompleteBefore = islandFinder.isComplete();
         islandFinder.locateIsland(Direction.N); 
