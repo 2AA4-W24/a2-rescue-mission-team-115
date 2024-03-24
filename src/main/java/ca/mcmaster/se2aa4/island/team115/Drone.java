@@ -33,7 +33,7 @@ public class Drone {
 
     public JSONObject beginExploration(){
         JSONObject decision;
-        if(tracker.getBatteryLevel()<25){
+        if(tracker.getBatteryLevel()<35){
             closestCreekID = searcher.getClosestCreek();
             searcher.setDrone(this, currentInfo, currentPosition);
             decision = searcher.stopExploration();
