@@ -7,7 +7,6 @@ public class Drone {
     private BatteryTracker tracker;
     private Coordinates currentPosition;
     private Direction currentDirection;
-    private Direction initialDirection;
     private IslandFinder finder = new IslandFinder();
     private GridSearcher searcher = new GridSearcher();
     private Info currentInfo;
@@ -23,24 +22,31 @@ public class Drone {
     public void updateDirection(Direction currentDirection){
         this.currentDirection = currentDirection;
     }
+
     public void updateCoordinates(Coordinates currentPosition){
         this.currentPosition = currentPosition;
     }
+
     public String getClosestCreekID(){
         return closestCreekID;
     }
-    public JSONObject beginExploration(Drone drone){
+
+    public int getBattery(){
+        return tracker.getBatteryLevel();
+    }
+
+    public JSONObject beginExploration(){
         JSONObject decision;
-        if(tracker.getBatteryLevel()<25){
+        if(tracker.getBatteryLevel()<35 || searcher.isComplete()){
             closestCreekID = searcher.getClosestCreek();
-            searcher.setDrone(drone, currentInfo, currentPosition);
+            searcher.setDrone(this, currentInfo, currentPosition);
             decision = searcher.stopExploration();
         }else{
             if(finder.isComplete()){
-                searcher.setDrone(drone, currentInfo, currentPosition);
+                searcher.setDrone(this, currentInfo, currentPosition);
                 decision = searcher.findPOIs(currentDirection);
             }else{
-                finder.setDrone(drone, currentInfo, currentPosition);
+                finder.setDrone(this, currentInfo, currentPosition);
                 decision = finder.locateIsland(currentDirection);
             }
         }

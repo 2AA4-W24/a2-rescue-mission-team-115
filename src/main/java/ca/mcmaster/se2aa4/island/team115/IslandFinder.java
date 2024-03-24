@@ -177,5 +177,4 @@ public class IslandFinder {
     public void stateChangeFlyIsland(Integer range) {
         this.state = new FlyToIsland(range);
     }
-
 }

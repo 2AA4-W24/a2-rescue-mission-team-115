@@ -54,7 +54,7 @@ public class IslandFinderTest {
     @Test
     void echoForwardAndFoundGround() {
         JSONObject response = new JSONObject().put("found", "GROUND").put("range", 2);
-        Info info = new Info(0, response, "OK");
+        Info info = new Info(3, response, "OK");
         islandfinder.setDrone(drone, info, coordinates);
         islandfinder.stateChangeEchoForward();
         JSONObject result = islandfinder.locateIsland(Direction.N);
@@ -63,7 +63,7 @@ public class IslandFinderTest {
     @Test
     void echoForwardEmpty() {
         JSONObject response = new JSONObject().put("found", "OUT_OF_RANGE").put("range", 2);
-        Info info = new Info(0, response, "OK");
+        Info info = new Info(3, response, "OK");
         islandfinder.setDrone(drone, info, coordinates);
         islandfinder.stateChangeEchoForward();
         JSONObject result = islandfinder.locateIsland(Direction.N);
@@ -72,7 +72,7 @@ public class IslandFinderTest {
     @Test
     void echoRightThenEchoLeftEmpty() {
         JSONObject response = new JSONObject().put("found", "OUT_OF_RANGE").put("range", 2);
-        Info info = new Info(0, response, "OK");
+        Info info = new Info(3, response, "OK");
         islandfinder.setDrone(drone, info, coordinates);
         islandfinder.stateChangeEchoRight();
         JSONObject result = islandfinder.locateIsland(Direction.N);
@@ -94,7 +94,7 @@ public class IslandFinderTest {
     @Test
     void flyToIsland() {
         JSONObject response = new JSONObject().put("found", "GROUND").put("range", 2);
-        Info info = new Info(0, response, "OK");
+        Info info = new Info(3, response, "OK");
         islandfinder.setDrone(drone, info, coordinates);
         islandfinder.stateChangeFlyIsland(2);
         islandfinder.locateIsland(Direction.N);
@@ -105,7 +105,7 @@ public class IslandFinderTest {
     @Test
     void turnRightWhenGroundFoundRight() {
         JSONObject response = new JSONObject().put("found", "GROUND").put("range", 2);
-        Info info = new Info(0, response, "OK");
+        Info info = new Info(3, response, "OK");
         islandfinder.setDrone(drone, info, coordinates);
         islandfinder.stateChangeEchoRight();
         JSONObject result = islandfinder.locateIsland(Direction.N.rightDir());
@@ -114,7 +114,7 @@ public class IslandFinderTest {
     @Test
     void turnLeftWhenGroundFoundLeft() {
         JSONObject response = new JSONObject().put("found", "GROUND").put("range", 2);
-        Info info = new Info(0, response, "OK");
+        Info info = new Info(3, response, "OK");
         islandfinder.setDrone(drone, info, coordinates);
         islandfinder.stateChangeEchoLeft();
         JSONObject result = islandfinder.locateIsland(Direction.N.leftDir());
