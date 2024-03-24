@@ -1,7 +1,5 @@
 package ca.mcmaster.se2aa4.island.team115;
 
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class IslandFinder {
