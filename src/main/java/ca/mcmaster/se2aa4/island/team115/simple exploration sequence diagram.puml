@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+
+actor Runner
+participant Explorer
+participant Drone
+participant "IslandFinder/GridSearcher" as Finder
+participant Action
+
+Runner -> Explorer : initialize()
+Explorer -> Drone : new Drone(batteryLevel, direction)
+Explorer -> Explorer : takeDecision()
+Explorer -> Drone : beginExploration()
+Drone -> Finder : locateIsland()/findPOIs()
+Finder -> Action : echo()/fly()/scan()
+Action --> Finder : getDecision
+Finder --> Drone : return locateIsland
+Drone --> Explorer : decision(JSONObject)
+Explorer --> Runner : decisionResult(String)
+
+@enduml

@@ -41,7 +41,7 @@ public class POIMap{
             }
         }
 
-        return closestCreekUid; 
+        return closestCreekUid;
     }
 
 

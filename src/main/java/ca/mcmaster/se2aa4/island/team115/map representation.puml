@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+
+class Coordinates {
+  -X: Integer
+  -Y: Integer
+}
+
+class POIMap {
+  -emergencySpot: Coordinates
+  -pois: Map<String, Coordinates>
+  +addPOI(uid: String, coordinate: Coordinates): void
+  +getPOICoordinates(uid: String): Coordinates
+  +setEmergencySpot(coordinate: Coordinates): void
+  +calculateClosestCreek(): String
+}
+
+class Drone {
+  -currentPosition: Coordinates
+}
+
+class IslandFinder {
+  -currentPosition: Coordinates
+}
+
+class GridSearcher {
+  -currentPosition: Coordinates
+}
+
+POIMap *-- Coordinates : "Manages"
+Drone -- POIMap : "Navigates using"
+IslandFinder -- POIMap : "Updates & Queries"
+GridSearcher -- POIMap : "Updates & Queries"
+
+@enduml

@@ -1,0 +1,227 @@
+@startuml
+!theme plain
+
+interface POIFinder {
+  +findPOIs(Direction direction): JSONObject
+}
+
+class BatteryTracker {
+  -currBattery: int
+  +BatteryTracker(currBattery: int)
+  +getBatteryLevel(): int
+  +adjustBattery(cost: int): void
+}
+
+class Coordinates {
+  -X: Integer
+  -Y: Integer
+  -direction: Direction
+  +Coordinates(X: Integer, Y: Integer)
+  +setDirection(direction: Direction): void
+  +getX(): int
+  +getY(): int
+  +flyForward(): void
+  +turnLeft(): void
+  +turnRight(): void
+}
+
+enum Direction {
+  N, E, S, W
+  +leftDir(): Direction
+  +rightDir(): Direction
+}
+
+class Drone {
+  -tracker: BatteryTracker
+  -currentPosition: Coordinates
+  -currentDirection: Direction
+  -finder: IslandFinder
+  -searcher: GridSearcher
+  -currentInfo: Info
+  -closestCreekID: String
+  +Drone(initialBattery: Integer, direction: String)
+  +updateDirection(currentDirection: Direction): void
+  +updateCoordinates(currentPosition: Coordinates): void
+  +getClosestCreekID(): String
+  +getBattery(): int
+  +beginExploration(): JSONObject
+  +receiveResponse(cost: Integer, currentInfo: Info): void
+}
+
+class Explorer {
+  -drone: Drone
+  -trans: Translator
+  +initialize(s: String): void
+  +takeDecision(): String
+  +acknowledgeResults(s: String): void
+  +deliverFinalReport(): String
+}
+
+class GridSearcher {
+  -finder: IslandFinder
+  -turnRightOnUTurn: boolean
+  -searchingComplete: boolean
+  -map: POIMap
+  -state: GridSearcherStates
+  -currentDirection: Direction
+  -coordinates: Coordinates
+  -drone: Drone
+  -info: Info
+  -action: Action
+  -scanCount: Integer
+  +GridSearcher()
+  +isComplete(): boolean
+  +stopExploration(): JSONObject
+  +setDrone(drone: Drone, info: Info, coordinates: Coordinates): void
+  +setState(state: GridSearcherStates): void
+  +findPOIs(currentDirection: Direction): JSONObject
+}
+
+class Info {
+  -cost: Integer
+  -extras: JSONObject
+  -droneStatus: String
+  -direction: Direction
+  +Info(cost: Integer, extras: JSONObject, droneStatus: String)
+  +getDirection(): Direction
+  +getExtras(): JSONObject
+  +getCost(): Integer
+  +getStatus(): String
+}
+
+class IslandFinder {
+  -findingComplete: boolean
+  -turnRightOnUTurn: boolean
+  -state: IslandFinderStates
+  -currentDirection: Direction
+  -coordinates: Coordinates
+  -drone: Drone
+  -info: Info
+  -action: Action
+  +IslandFinder()
+  +shouldTurnRightOnUTurn(): boolean
+  +isComplete(): boolean
+  +setDrone(drone: Drone, info: Info, coordinates: Coordinates): void
+  +setState(state: IslandFinderStates): void
+  +locateIsland(currentDirection: Direction): JSONObject
+}
+
+class POIMap {
+  -emergencySpot: Coordinates
+  -pois: Map<String, Coordinates>
+  +POIMap()
+  +setEmergencySpot(coordinate: Coordinates): void
+  +addPOI(uid: String, coordinates: Coordinates): void
+  +getPOICoordinates(uid: String): Coordinates
+  +calculateClosestCreek(): String
+}
+
+class Action {
+  -decString: String
+  -decision: JSONObject
+  -parameters: JSONObject
+  +echo(direction: Direction): void
+  +fly(): void
+  +scan(): void
+  +heading(direction: Direction): void
+  +stop(): void
+  +getDecisionString(): String
+  +getDecision(): JSONObject
+  +reset(): void
+}
+
+class Translator {
+  +translate(response: JSONObject): Info
+}
+
+Drone *-- "1" BatteryTracker
+Drone *-- "1" Coordinates
+Drone *-- "1" IslandFinder
+Drone *-- "1" GridSearcher
+Drone *-- "1" Info
+Explorer o-- "1" Drone
+Explorer o-- "1" Translator
+GridSearcher *-- "1" Action
+IslandFinder *-- "1" Action
+GridSearcher ..> POIFinder : implements
+GridSearcher *-- "1" POIMap
+
+note right of POIFinder
+  POIFinder interface is implemented
+  by the GridSearcher class to define
+  the method for finding points of interest.
+end note
+
+note right of BatteryTracker
+  BatteryTracker manages the drone's
+  battery level, adjusting it based on actions performed.
+end note
+
+note right of Coordinates
+  Coordinates represent the drone's
+  spatial location and provide methods
+  for movement and direction changes.
+end note
+
+note right of Direction
+  Direction is an enum that represents
+  cardinal directions and provides
+  methods to get adjacent directions.
+end note
+
+note right of Drone
+  Drone class encapsulates the main
+  functionalities of the drone, including
+  exploration and managing its state.
+end note
+
+note right of Explorer
+  Explorer class acts as the main
+  controller, initializing exploration,
+  making decisions, and processing results.
+end note
+
+note right of GridSearcher
+  GridSearcher is responsible for
+  searching the grid and finding points
+  of interest, implementing the POIFinder.
+  The classes that implement IslandFindderStates ARE NOT SHOWN
+    DUE TO THIS BEING A  HIGH LEVEL CLASS DIAGRAM. STATE CLASSES
+    THAT IMPLEMENT IslandFinderStates ARE PRIVATE CLASSSES UNDER
+    THE IslandFinder CLASS.
+end note
+
+note right of Info
+  Info class encapsulates information
+  received from actions, such as cost,
+  status, and additional details.
+end note
+
+note right of IslandFinder
+  IslandFinder contains logic for
+  locating an island, handling different
+  states and actions.
+  The classes that implement IslandFindderStates ARE NOT SHOWN
+  DUE TO THIS BEING A  HIGH LEVEL CLASS DIAGRAM. STATE CLASSES
+  THAT IMPLEMENT IslandFinderStates ARE PRIVATE CLASSSES UNDER
+  THE IslandFinder CLASS.
+end note
+
+note right of POIMap
+  POIMap manages points of interest on
+  a map and calculates the closest creek
+  based on coordinates.
+end note
+
+note right of Action
+  Action class contains methods for
+  different actions the drone can perform
+  and manages a decision structure.
+end note
+
+note right of Translator
+  Translator translates JSON responses
+  into Info objects.
+end note
+
+@enduml

@@ -74,7 +74,7 @@ public class Coordinates {
                 break;
             case Direction.E:
                 Y--;
-                X++;    
+                X++;
                 break;
             case Direction.W:
                 Y++;
