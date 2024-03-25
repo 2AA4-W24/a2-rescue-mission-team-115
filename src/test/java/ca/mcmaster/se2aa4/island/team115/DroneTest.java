@@ -12,7 +12,6 @@ class DroneTest {
     @BeforeEach
     void setUp() {
         drone = new Drone(1000, "N");
-        POIMap = new POIMap();
     }
 
     @Test

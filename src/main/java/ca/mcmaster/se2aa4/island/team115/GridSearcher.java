@@ -338,4 +338,37 @@ public class GridSearcher implements POIFinder{
             return action.getDecision();
         }
     }
+    public void stateChangeScan() {
+        this.state = new Scan();
+    }
+    public void stateChangeSpecialTurn() {
+        this.state = new SpecialTurn();
+    }
+    public void stateChangeFlyToPrepareForSpecialTurn(Integer range) {
+        this.state = new FlyToPrepareForSpecialTurn(range);
+    }
+    
+    public void stateChangeFlyToIsland(Integer range) {
+        this.state = new FlyToIsland(range);
+    }
+
+    public void stateChangeFlyAwayFromIsland(Integer range) {
+        this.state = new FlyAwayFromIsland(range);
+    }
+
+    public void stateChangeEchoToCheckInterlacedScanCompletion() {
+        this.state = new EchoToCheckInterlacedScanCompletion();
+    }
+
+    public void stateChangeFly() {
+        this.state = new Fly();
+    }
+
+    public void stateChangeEchoForward() {
+        this.state = new EchoForward();
+    }
+    public void stateChangeUTurn(){
+        this.state = new UTurn();
+    }
+
 }
