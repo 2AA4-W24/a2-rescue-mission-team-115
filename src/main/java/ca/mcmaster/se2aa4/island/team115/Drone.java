@@ -1,7 +1,7 @@
 package ca.mcmaster.se2aa4.island.team115;
 
 import org.json.JSONObject;
-
+// drone is like main
 
 public class Drone {
     private BatteryTracker tracker;
