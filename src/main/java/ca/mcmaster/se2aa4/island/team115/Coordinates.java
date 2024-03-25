@@ -74,7 +74,7 @@ public class Coordinates {
                 break;
             case Direction.E:
                 Y--;
-                X++;    
+                X++;
                 break;
             case Direction.W:
                 Y++;
@@ -82,8 +82,5 @@ public class Coordinates {
                 break;
         }
         this.direction = direction.rightDir();
-    }
-    public Direction getDirection(){
-        return direction;
     }
 }

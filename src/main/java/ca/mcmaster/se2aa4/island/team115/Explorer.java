@@ -24,14 +24,14 @@ public class Explorer implements IExplorerRaid {
         drone = new Drone (batteryLevel, direction);
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
-    
+
     }
 
     @Override
     public String takeDecision(){
         JSONObject decision = new JSONObject();
         decision = drone.beginExploration();
-        
+
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();
     }

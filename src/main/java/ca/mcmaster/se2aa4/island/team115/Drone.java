@@ -57,7 +57,4 @@ public class Drone {
         tracker.adjustBattery(cost);
         this.currentInfo = currentInfo;
     }
-    public Direction getDirection(){
-        return currentDirection;
-    }
 }

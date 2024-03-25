@@ -11,7 +11,7 @@ public class IslandFinder {
     private Drone drone;
     private Info info;
     private Action action = new Action();
-    
+
     public IslandFinder(){
         state = new Fly();
     }
@@ -36,16 +36,16 @@ public class IslandFinder {
     public void setState(IslandFinderStates state){
         this.state = state;
     }
-    
+
     public JSONObject locateIsland(Direction currentDirection){
         action.reset();
         this.currentDirection = currentDirection;
         return state.handle(this);
     }
-    
+
     private interface IslandFinderStates {
         public JSONObject handle(IslandFinder finder);
-    } 
+    }
 
     private class Fly implements IslandFinderStates{
         @Override
@@ -82,7 +82,7 @@ public class IslandFinder {
         }
         @Override
         public JSONObject handle(IslandFinder finder){
-            
+
             if(flyCount<range-1){
                 action.fly();
                 coordinates.flyForward();
@@ -111,7 +111,7 @@ public class IslandFinder {
             }else{
                 action.echo(currentDirection.leftDir());
                 finder.setState(new EchoLeft());
-                
+
             }
             return action.getDecision();
         }
@@ -134,7 +134,7 @@ public class IslandFinder {
                 coordinates.flyForward();
                 drone.updateCoordinates(coordinates);
                 finder.setState(new Fly());
-                
+
             }
             return action.getDecision();
         }
@@ -156,25 +156,5 @@ public class IslandFinder {
             return action.getDecision();
         }
     }
-    public void stateChangeFly() {
-        this.state = new Fly();
-    }
-    public void stateChangeEchoRight() {
-        this.state = new EchoRight();
-    }
-    public void stateChangeEchoLeft() {
-        this.state = new EchoLeft();
-    }
-    public void stateChangeTurnRight() {
-        this.state = new TurnRight();
-    }
-    public void stateChangeTurnLeft() {
-        this.state = new TurnLeft();
-    }
-    public void stateChangeEchoForward() {
-        this.state = new EchoForward();
-    }
-    public void stateChangeFlyIsland(Integer range) {
-        this.state = new FlyToIsland(range);
-    }
+
 }

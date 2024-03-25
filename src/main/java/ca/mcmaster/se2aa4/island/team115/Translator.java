@@ -11,7 +11,7 @@ public class Translator {
     private  Integer getCost(JSONObject response){
         Integer cost = response.getInt("cost");
         return cost;
-        
+
     }
 
     private  JSONObject getExtras(JSONObject response){

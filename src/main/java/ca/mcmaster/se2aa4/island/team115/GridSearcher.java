@@ -14,7 +14,8 @@ public class GridSearcher implements POIFinder{
     private Drone drone;
     private Info info;
     private Action action = new Action();
-    
+    private Integer scanCount = 0;
+
     public GridSearcher(){
         state = new Fly();
     }
@@ -22,7 +23,7 @@ public class GridSearcher implements POIFinder{
     public boolean isComplete(){
         return searchingComplete;
     }
-    
+
     public JSONObject stopExploration(){
         action.reset();
         action.stop();
@@ -52,9 +53,9 @@ public class GridSearcher implements POIFinder{
     }
 
     public String getClosestCreek(){
-       return map.calculateClosestCreek();
+        return map.calculateClosestCreek();
     }
-    
+
     @Override
     public JSONObject findPOIs(Direction currentDirection) {
         action.reset();
@@ -65,7 +66,7 @@ public class GridSearcher implements POIFinder{
     private interface GridSearcherStates{
         public JSONObject handle(GridSearcher searcher);
     }
-    
+
     private class Fly implements GridSearcherStates{
         @Override
         public JSONObject handle(GridSearcher searcher){
@@ -121,7 +122,7 @@ public class GridSearcher implements POIFinder{
                         drone.updateCoordinates(coordinates);
                     }
                     searcher.setState(new UTurn());
-    
+
                 }else{
                     action.fly();
                     coordinates.flyForward();
@@ -141,7 +142,7 @@ public class GridSearcher implements POIFinder{
         }
         @Override
         public JSONObject handle(GridSearcher searcher){
-            
+
             if(flyCount<range){
                 action.fly();
                 coordinates.flyForward();
@@ -164,7 +165,7 @@ public class GridSearcher implements POIFinder{
         }
         @Override
         public JSONObject handle(GridSearcher searcher){
-            
+
             if(flyCount<range){
                 action.fly();
                 coordinates.flyForward();
@@ -231,9 +232,13 @@ public class GridSearcher implements POIFinder{
                 drone.updateCoordinates(coordinates);;
                 searcher.setState(new FlyToIsland(range));
             } else {
+                scanCount++;
+                if(scanCount == 3){
+                    searchingComplete = true;
+                }
                 action.fly();
                 coordinates.flyForward();
-                drone.updateCoordinates(coordinates);;
+                drone.updateCoordinates(coordinates);
                 searcher.setState(new FlyToPrepareForSpecialTurn(range));
             }
             return action.getDecision();
@@ -249,7 +254,7 @@ public class GridSearcher implements POIFinder{
             flyCount = 0;
         }
         public JSONObject handle(GridSearcher searcher){
-            
+
             if(flyCount<range){
                 action.fly();
                 coordinates.flyForward();
@@ -338,37 +343,4 @@ public class GridSearcher implements POIFinder{
             return action.getDecision();
         }
     }
-    public void stateChangeScan() {
-        this.state = new Scan();
-    }
-    public void stateChangeSpecialTurn() {
-        this.state = new SpecialTurn();
-    }
-    public void stateChangeFlyToPrepareForSpecialTurn(Integer range) {
-        this.state = new FlyToPrepareForSpecialTurn(range);
-    }
-    
-    public void stateChangeFlyToIsland(Integer range) {
-        this.state = new FlyToIsland(range);
-    }
-
-    public void stateChangeFlyAwayFromIsland(Integer range) {
-        this.state = new FlyAwayFromIsland(range);
-    }
-
-    public void stateChangeEchoToCheckInterlacedScanCompletion() {
-        this.state = new EchoToCheckInterlacedScanCompletion();
-    }
-
-    public void stateChangeFly() {
-        this.state = new Fly();
-    }
-
-    public void stateChangeEchoForward() {
-        this.state = new EchoForward();
-    }
-    public void stateChangeUTurn(){
-        this.state = new UTurn();
-    }
-
 }
