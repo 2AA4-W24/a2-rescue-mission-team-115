@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+
+actor Runner
+participant Explorer
+participant Drone
+participant "IslandFinder" as IslandFinder
+participant "GridSearcher" as GridSearcher
+participant Action
+
+Runner -> Explorer : initialize()
+Explorer -> Drone : new Drone(batteryLevel, direction)
+note left: this is initialized by the game at the start.
+Explorer -> Explorer : takeDecision()
+Explorer -> Drone : beginExploration()
+
+alt Battery level and exploration state check
+    Drone -> Drone : check battery and state
+    alt if locating island
+        Drone -> IslandFinder : locateIsland()
+        loop Until island located or condition changes
+            IslandFinder -> Action : echo()/fly()
+            Action --> IslandFinder : getDecision()
+        end
+        IslandFinder --> Drone : update with locateIsland result
+    else if finding POIs
+        Drone -> GridSearcher : findPOIs()
+        loop Until POIs found or condition changes
+            GridSearcher -> Action : scan()/fly()
+            Action --> GridSearcher : getDecision()
+        end
+        GridSearcher --> Drone : update with findPOIs result
+    end
+end
+
+Drone --> Explorer : decision(JSONObject)
+Explorer --> Runner : decisionResult(String)
+
+@enduml

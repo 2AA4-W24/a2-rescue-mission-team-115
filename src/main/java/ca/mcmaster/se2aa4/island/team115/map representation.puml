@@ -1,0 +1,67 @@
+@startuml
+
+class GridSearcher {
+    -IslandFinder finder
+    -POIMap map
+    -Coordinates coordinates
+    -Drone drone
+    -Action action
+    +findPOIs(Direction direction): JSONObject
+    +stopExploration(): JSONObject
+}
+
+class POIMap {
+    -Map<String, Coordinates> pois
+    -Coordinates emergencySpot
+    +addPOI(String uid, Coordinates coordinates)
+    +setEmergencySpot(Coordinates coordinate)
+    +calculateClosestCreek(): String
+}
+
+class Coordinates {
+    -Integer X
+    -Integer Y
+    -Direction direction
+    +getX(): int
+    +getY(): int
+    +flyForward()
+    +turnRight()
+    +turnLeft()
+}
+
+class Drone {
+    -BatteryTracker tracker
+    -Coordinates currentPosition
+    -Direction currentDirection
+    +updateCoordinates(Coordinates currentPosition)
+    +updateDirection(Direction currentDirection)
+    +beginExploration(Drone drone): JSONObject
+}
+
+class Info {
+    -Integer cost
+    -JSONObject extras
+    -String droneStatus
+    +getExtras(): JSONObject
+    +getCost(): Integer
+    +getStatus(): String
+}
+
+class Action {
+    -String decString
+    -JSONObject decision
+    +echo(Direction direction)
+    +fly()
+    +scan()
+    +heading(Direction direction)
+    +stop()
+    +getDecision(): JSONObject
+}
+
+GridSearcher "1" -- "1" POIMap : uses >
+GridSearcher "1" -- "1" Coordinates : has >
+GridSearcher "1" -- "1" Drone : controls >
+GridSearcher "1" -- "1" Info : processes >
+GridSearcher "1" -- "1" Action : generates >
+
+@enduml
