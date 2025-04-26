@@ -58,3 +58,74 @@ It creates three files in the `outputs` directory:
 Each week, you'll have to `tag` the version you want to submit for the competition. This version will be used in the weekly run. No tag means no competition.
 
 The tag syntax is `wX`, with `X` the week number. So your product for the first week will be tagged `w1`.
+
+## Technical Details
+
+### Project Structure
+```
+src/main/java/ca/mcmaster/se2aa4/island/team115/
+├── Action.java           # Action handling and execution
+├── BatteryTracker.java   # Battery management system
+├── Coordinates.java      # Coordinate system implementation
+├── Direction.java        # Direction enumeration
+├── Drone.java           # Drone control and navigation
+├── Explorer.java        # Main exploration logic
+├── GridSearcher.java    # Grid-based search algorithms
+├── Info.java            # Information processing
+├── IslandFinder.java    # Island detection and mapping
+├── POIFinder.java       # Point of Interest detection
+├── POIMap.java          # POI mapping and management
+├── Runner.java          # Application entry point
+└── Translator.java      # Command translation
+```
+
+### Technical Stack
+- **Language**: Java 21
+- **Build Tool**: Maven
+- **Testing Framework**: JUnit 5
+- **Logging**: Log4j 2.22.1
+- **Dependencies**:
+  - Island Framework (Player & Runner) v3.0
+  - Apache Commons CLI
+  - JSON Processing
+  - Mockito (for testing)
+
+### Key Features
+1. **Autonomous Navigation**
+   - Grid-based exploration algorithm
+   - Efficient path planning
+   - Collision avoidance
+
+2. **Resource Management**
+   - Battery level tracking
+   - Resource collection optimization
+   - Safe return path calculation
+
+3. **Mapping System**
+   - Real-time island mapping
+   - POI detection and tracking
+   - Coordinate system management
+
+4. **Safety Features**
+   - Battery level monitoring
+   - Emergency return protocols
+   - Boundary detection
+
+### Testing
+The project includes comprehensive test coverage using JUnit 5 and Mockito. To run tests:
+```bash
+mvn test
+```
+
+### Documentation
+The project includes several UML diagrams for better understanding:
+- High-level class diagram
+- Sequence diagrams
+- Map representation diagrams
+
+### License
+This project is licensed under the terms specified in the LICENSE.txt file.
+
+### Acknowledgments
+- McMaster University SE2AA4 Course Team
+- ACE Design Lab for the Island Framework

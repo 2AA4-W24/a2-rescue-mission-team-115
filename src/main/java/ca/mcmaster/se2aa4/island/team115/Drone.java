@@ -1,7 +1,7 @@
 package ca.mcmaster.se2aa4.island.team115;
 
 import org.json.JSONObject;
-
+// drone is like main
 
 public class Drone {
     private BatteryTracker tracker;
@@ -23,6 +23,10 @@ public class Drone {
         this.currentDirection = currentDirection;
     }
 
+    public Direction getDirection() {
+        return currentDirection;
+    }
+
     public void updateCoordinates(Coordinates currentPosition){
         this.currentPosition = currentPosition;
     }
@@ -31,9 +35,13 @@ public class Drone {
         return closestCreekID;
     }
 
+    public int getBattery(){
+        return tracker.getBatteryLevel();
+    }
+
     public JSONObject beginExploration(){
         JSONObject decision;
-        if(tracker.getBatteryLevel()<25){
+        if(tracker.getBatteryLevel()<35 || searcher.isComplete()){
             closestCreekID = searcher.getClosestCreek();
             searcher.setDrone(this, currentInfo, currentPosition);
             decision = searcher.stopExploration();

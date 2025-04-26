@@ -11,7 +11,7 @@ public class IslandFinder {
     private Drone drone;
     private Info info;
     private Action action = new Action();
-    
+
     public IslandFinder(){
         state = new Fly();
     }
@@ -36,16 +36,41 @@ public class IslandFinder {
     public void setState(IslandFinderStates state){
         this.state = state;
     }
-    
+
+    // Methods needed for testing
+    public void stateChangeEchoForward() {
+        setState(new EchoForward());
+    }
+
+    public void stateChangeEchoRight() {
+        setState(new EchoRight());
+    }
+
+    public void stateChangeEchoLeft() {
+        setState(new EchoLeft());
+    }
+
+    public void stateChangeTurnRight() {
+        setState(new TurnRight());
+    }
+
+    public void stateChangeTurnLeft() {
+        setState(new TurnLeft());
+    }
+
+    public void stateChangeFlyIsland(int range) {
+        setState(new FlyToIsland(range));
+    }
+
     public JSONObject locateIsland(Direction currentDirection){
         action.reset();
         this.currentDirection = currentDirection;
         return state.handle(this);
     }
-    
+
     private interface IslandFinderStates {
         public JSONObject handle(IslandFinder finder);
-    } 
+    }
 
     private class Fly implements IslandFinderStates{
         @Override
@@ -82,7 +107,7 @@ public class IslandFinder {
         }
         @Override
         public JSONObject handle(IslandFinder finder){
-            
+
             if(flyCount<range-1){
                 action.fly();
                 coordinates.flyForward();
@@ -111,7 +136,7 @@ public class IslandFinder {
             }else{
                 action.echo(currentDirection.leftDir());
                 finder.setState(new EchoLeft());
-                
+
             }
             return action.getDecision();
         }
@@ -134,7 +159,7 @@ public class IslandFinder {
                 coordinates.flyForward();
                 drone.updateCoordinates(coordinates);
                 finder.setState(new Fly());
-                
+
             }
             return action.getDecision();
         }

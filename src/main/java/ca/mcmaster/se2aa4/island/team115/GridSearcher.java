@@ -62,6 +62,43 @@ public class GridSearcher implements POIFinder{
         return state.handle(this);
     }
 
+    // Methods needed for testing
+    public void stateChangeFly() {
+        setState(new Fly());
+    }
+    
+    public void stateChangeScan() {
+        setState(new Scan());
+    }
+    
+    public void stateChangeUTurn() {
+        setState(new UTurn());
+    }
+    
+    public void stateChangeEchoForward() {
+        setState(new EchoForward());
+    }
+    
+    public void stateChangeFlyToIsland(int range) {
+        setState(new FlyToIsland(range));
+    }
+    
+    public void stateChangeSpecialTurn() {
+        setState(new SpecialTurn());
+    }
+    
+    public void stateChangeFlyAwayFromIsland(int range) {
+        setState(new FlyAwayFromIsland(range));
+    }
+    
+    public void stateChangeFlyToPrepareForSpecialTurn(int range) {
+        setState(new FlyToPrepareForSpecialTurn(range));
+    }
+    
+    public void stateChangeEchoToCheckInterlacedScanCompletion() {
+        setState(new EchoToCheckInterlacedScanCompletion());
+    }
+
     private interface GridSearcherStates{
         public JSONObject handle(GridSearcher searcher);
     }
@@ -105,7 +142,7 @@ public class GridSearcher implements POIFinder{
             if(finding.equals("GROUND")){
                 action.fly();
                 coordinates.flyForward();
-                drone.updateCoordinates(coordinates);;
+                drone.updateCoordinates(coordinates);
                 searcher.setState(new FlyToIsland(range));
             }else{
                 if(range<4){
@@ -145,7 +182,7 @@ public class GridSearcher implements POIFinder{
             if(flyCount<range){
                 action.fly();
                 coordinates.flyForward();
-                drone.updateCoordinates(coordinates);;
+                drone.updateCoordinates(coordinates);
                 flyCount++;
             }else{
                 action.scan();
@@ -160,6 +197,7 @@ public class GridSearcher implements POIFinder{
         private Integer flyCount;
         private FlyAwayFromIsland(Integer range){
             this.range = range-4;
+            if (this.range < 0) this.range = 0;
             flyCount = 0;
         }
         @Override
@@ -168,7 +206,7 @@ public class GridSearcher implements POIFinder{
             if(flyCount<range){
                 action.fly();
                 coordinates.flyForward();
-                drone.updateCoordinates(coordinates);;
+                drone.updateCoordinates(coordinates);
                 flyCount++;
             }else{
                 if(turnRightOnUTurn){
@@ -228,12 +266,12 @@ public class GridSearcher implements POIFinder{
             if (finding.equals("GROUND")){
                 action.fly();
                 coordinates.flyForward();
-                drone.updateCoordinates(coordinates);;
+                drone.updateCoordinates(coordinates);
                 searcher.setState(new FlyToIsland(range));
             } else {
                 action.fly();
                 coordinates.flyForward();
-                drone.updateCoordinates(coordinates);;
+                drone.updateCoordinates(coordinates);
                 searcher.setState(new FlyToPrepareForSpecialTurn(range));
             }
             return action.getDecision();
@@ -246,6 +284,7 @@ public class GridSearcher implements POIFinder{
         private boolean turnRightOnSpecialTurn = !turnRightOnUTurn;
         private FlyToPrepareForSpecialTurn(Integer range){
             this.range = range-2;
+            if (this.range < 0) this.range = 0;
             flyCount = 0;
         }
         public JSONObject handle(GridSearcher searcher){
@@ -253,7 +292,7 @@ public class GridSearcher implements POIFinder{
             if(flyCount<range){
                 action.fly();
                 coordinates.flyForward();
-                drone.updateCoordinates(coordinates);;
+                drone.updateCoordinates(coordinates);
                 flyCount++;
             }else{
                 if(turnRightOnSpecialTurn){
